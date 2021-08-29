@@ -17,7 +17,8 @@ enum MsgType {
     Change,// Information to clients  
     Event,// Information from clients to server  
     TextMessage// Send text messages to one or all
-};// Included first in all messagesstruct 
+};// Included first in all messagesstruct
+
 struct MsgHead {
     unsigned int length;// Total length for whole message  
     unsigned int seq_no;  // Sequence number  
@@ -31,6 +32,7 @@ enum ObjectDesc {
     Vehicle,
     StaticObject
 };
+
 enum ObjectForm {
     Cube,
     Sphere,
@@ -47,6 +49,47 @@ struct JoinMsg {
 
 struct LeaveMsg {
     MsgHead  head;
+};
+
+enum ChangeType {
+    NewPlayer,
+    PlayerLeave,
+    NewPlayerPosition
+};
+// Included first in all Change messages
+struct ChangeMsg {
+    MsgHead head;
+    ChangeType type;
+};
+
+struct Coordinate {
+    int x;
+    int y;
+};
+
+struct NewPlayerPositionMsg {
+    ChangeMsg msg; //Change message header
+    Coordinate pos; //New object position
+    Coordinate dir; //New object direction
+};
+
+// Messages of type Event (Client -> Server)
+enum EventType
+{
+    Move
+};
+// Included first in all Event messages
+struct EventMsg
+{
+    MsgHead head;
+    EventType type;
+};
+// Variantions of EventMsg
+struct MoveEvent
+{
+    EventMsg event;
+    Coordinate pos; //New object position
+    Coordinate dir; //New object direction
 };
 
 int main()
@@ -137,23 +180,50 @@ int main()
     joinMsg.head.length = sizeof(joinMsg);
     joinMsg.head.type = Join;
     int lol = 0;
-    LeaveMsg leave;
-    leave.head.id = 1;
 
     lol = send(ConnectSocket, (char*)&joinMsg, sizeof(joinMsg), 0);
     printf("Bytes Sent: %ld\n", lol);
-
-    MsgHead* msghead;
+    int clientId = 0;
 
     do {
         iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
+            MsgHead* msghead;
             printf("Bytes received: %d\n", iResult);
             msghead = (MsgHead*)recvbuf;
-            std::cout << msghead->id << "\n";
-            std::cout << msghead->length << "\n";
-            std::cout << msghead->seq_no << "\n";
-            std::cout << msghead->type << "\n";
+            if (msghead->type == Change) {
+                std::cout << "Change detected\n";
+                ChangeMsg* chgmsg = (ChangeMsg*)msghead;
+
+                if (chgmsg->type == NewPlayer) {
+                    std::cout << "New player detected\n";
+                }
+                if (chgmsg->type == NewPlayerPosition) {
+                    std::cout << "New player position detected\n";
+                    NewPlayerPositionMsg* newplayer = (NewPlayerPositionMsg*)chgmsg;
+                    std::cout << "X: " << newplayer->pos.x << "Y: " << newplayer->pos.y << "\n";
+                }
+            }
+            clientId = msghead->id;
+            std::cout << "ID: " << msghead->id << "\n";
+            std::cout << "Length: " << msghead->length << "\n";
+            std::cout << "SEQ: " << msghead->seq_no << "\n";
+            std::cout << "Type: " << msghead->type << "\n";
+            /*
+            EventMsg eventMsg;
+            eventMsg.head.id = clientId;
+            eventMsg.head.type = Event;
+            eventMsg.head.length = sizeof(eventMsg);
+            eventMsg.type = Move;
+            MoveEvent moveEvent;
+            moveEvent.event = eventMsg;
+            moveEvent.pos.x = -100;
+            moveEvent.pos.y = -99;
+            moveEvent.dir.x = 0;
+            moveEvent.dir.y = 0;
+
+            lol = send(ConnectSocket, (char*)&moveEvent, sizeof(moveEvent), 0);
+            printf("Bytes Sent: %ld\n", lol);*/
         } else if (iResult == 0)
             printf("Connection closed\n");
         else
