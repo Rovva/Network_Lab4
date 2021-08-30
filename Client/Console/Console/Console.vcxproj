@@ -141,9 +141,11 @@
     <ClCompile Include="ConnectToServer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Messages.cpp" />
+    <ClCompile Include="ReaderThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConnectToServer.h" />
+    <ClInclude Include="ReaderThread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

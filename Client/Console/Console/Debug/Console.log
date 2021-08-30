@@ -1,8 +1,4 @@
 ﻿  Console.cpp
-  ConnectToServer.cpp
-  Generating Code...
-c:\users\chris\onedrive\dokument\github\network_lab4\client\console\console\connecttoserver.cpp(64): warning C4715: 'ConnectToServer::setupConnection': not all control paths return a value
-  Skipping... (no relevant changes detected)
-  Messages.cpp
+c:\users\chris\onedrive\dokument\github\network_lab4\client\console\console\console.cpp(66): warning C4101: 'sendbuf': unreferenced local variable
   Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
   Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.pdb (Full PDB)

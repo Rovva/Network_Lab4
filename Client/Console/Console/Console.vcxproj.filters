@@ -24,9 +24,15 @@
     <ClCompile Include="ConnectToServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReaderThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConnectToServer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReaderThread.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
