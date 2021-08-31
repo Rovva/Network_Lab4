@@ -63,9 +63,7 @@ int main()
     while (1) {
 
         MoveEvent move;
-        char sendbuf[sizeof(move)];
         move.event.type = Move;
-        std::cin >> clientId;
         move.event.head.id = clientId;
         move.event.head.length = sizeof(move);
         move.event.head.seq_no = seq++;
@@ -74,25 +72,8 @@ int main()
         move.pos.x = -100;
         move.pos.y = -99;
 
-        //memcpy((void*)sendbuf, (void*)&move, sizeof(move));
         lol = send(ConnectSocket, (char*)&move, sizeof(move), 0);
-
-        /*
-        std::cout << "SEQ: " << seq << std::endl;
-        std::cin >> clientId;
-        EventMsg eventMsg;
-        eventMsg.head.id = clientId;
-        eventMsg.head.type = Event;
-        eventMsg.head.seq_no = seq++;
-        eventMsg.type = Move;
-        MoveEvent moveEvent;
-        moveEvent.event = eventMsg;
-        moveEvent.pos.x = -100;
-        moveEvent.pos.y = -100;
-        eventMsg.head.length = sizeof(moveEvent);
-        */
-        //lol = send(ConnectSocket, (char*)&moveEvent, sizeof(moveEvent), 0);
-        //printf("Bytes Sent: %ld\n", lol);
+        printf("Bytes Sent: %ld\n", lol);
 
         Sleep(4000);
     }
