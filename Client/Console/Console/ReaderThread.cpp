@@ -1,5 +1,4 @@
 #include "ReaderThread.h"
-#include "Messages.cpp"
 #include <stdio.h>
 #include <iostream>
 
@@ -7,7 +6,7 @@ ReaderThread::ReaderThread(SOCKET Socket) {
     ConnectSocket = Socket;
 }
 
-void ReaderThread::operator()(int *seq) {
+void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPosition) {
     int recvbuflen = 512;
     int iResult;
 
@@ -30,6 +29,8 @@ void ReaderThread::operator()(int *seq) {
                     std::cout << "New player position detected\n";
                     NewPlayerPositionMsg* newplayer = (NewPlayerPositionMsg*)chgmsg;
                     std::cout << "X: " << newplayer->pos.x << "Y: " << newplayer->pos.y << "\n";
+                    *localClientID = newplayer->msg.head.id;
+                    *startPosition = newplayer->pos;
                 }
             }
             //clientId = msghead->id;

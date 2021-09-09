@@ -18,21 +18,33 @@
     <ClCompile Include="Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Messages.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnectToServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReaderThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WriterThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConnectToServer.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Messages.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReaderThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectToServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WriterThread.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

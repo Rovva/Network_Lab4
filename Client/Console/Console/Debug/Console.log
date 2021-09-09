@@ -1,4 +1,4 @@
 ﻿  Console.cpp
-c:\users\chris\onedrive\dokument\github\network_lab4\client\console\console\console.cpp(66): warning C4101: 'sendbuf': unreferenced local variable
-  Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
-  Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.pdb (Full PDB)
+  WriterThread.cpp
+  Generating Code...
+  Console.vcxproj -> C:\Users\chris\Documents\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
