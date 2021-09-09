@@ -40,6 +40,8 @@ void WriterThread::sendMoveEvent(int id, Coordinate position, int *seq) {
     move.event.head.type = Event;
 
     move.pos = position;
+    move.dir.x = 0;
+    move.dir.y = 0;
 
     sendMsg = send(ConnectSocket, (char*)&move, sizeof(move), 0);
     printf("Move event message sent.\n");

@@ -11,9 +11,7 @@ int ConnectToServer::setupConnection() {
         return 1;
     }
 
-    struct addrinfo* result = NULL,
-        * ptr = NULL,
-        hints;
+    struct addrinfo* result = NULL, * ptr = NULL, hints;
 
     ZeroMemory(&hints, sizeof(hints));
     hints.ai_family = AF_UNSPEC;

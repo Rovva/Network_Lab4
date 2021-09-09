@@ -39,28 +39,33 @@ int main()
     SOCKET ConnectSocket = serverConnection->getSocket();
 
     int seq = 0;
-    int localClientID = 0;
+    int localClientID = -1;
     Coordinate localStartingPosition;
-    localStartingPosition.x = 0;
-    localStartingPosition.y = 0;
+    localStartingPosition.x = -200;
+    localStartingPosition.y = -200;
     //ReaderThread* readerThread;
     //readerThread = new ReaderThread(ConnectSocket);
     std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition);
-    WriterThread* writer = new WriterThread(ConnectSocket);
+    WriterThread *writer = new WriterThread(ConnectSocket);
+    Sleep(1000);
     writer->sendJoin();
+    // I found no other way to get starting coordinates then sending a wrong move.
+    Sleep(1000);
+    writer->sendMoveEvent(localClientID, localStartingPosition, &seq);
     Client *localClient;
     localClient = new Client(localClientID, localStartingPosition);
 
     //std::thread writer(WriterThread(ConnectSocket));
-    Sleep(5000);
     //readerThread->runThread();
-
-
+    int direction = 0;
+    Coordinate cords;
+    //Sleep(1000);
+    //writer->sendJoin();
+    Sleep(5000);
+    std::cout << "Local client ID: " << localClientID << std::endl;
+    std::cout << "Local client position: " << localStartingPosition.x << std::endl;
     while (1) {
 
-
-
-        Sleep(4000);
     }
     // cleanup
     closesocket(ConnectSocket);

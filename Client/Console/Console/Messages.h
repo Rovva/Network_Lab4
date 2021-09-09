@@ -54,6 +54,13 @@ struct ChangeMsg {
 struct Coordinate {
     int x;
     int y;
+}; 
+
+struct NewPlayerMsg {
+    ChangeMsg msg; //Change message header with new client id
+    ObjectDesc desc;
+    ObjectForm form;
+    char name[MAXNAMELEN]; // nullterminated!, or empty
 };
 
 struct NewPlayerPositionMsg {
