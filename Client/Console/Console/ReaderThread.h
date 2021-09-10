@@ -6,9 +6,9 @@
 #include <stdio.h>
 #include <thread>
 #include <iostream>
-#ifndef MY_HEADER_FILE_IS_INCLUDED
+#ifndef MESSAGES_H
 
-#define MY_HEADER_FILE_IS_INCLUDED
+#define MESSAGES_H
 
 #include "Messages.h"
 

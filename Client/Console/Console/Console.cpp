@@ -14,9 +14,9 @@
 #include "ReaderThread.h"
 #include "WriterThread.h"
 #include "Client.h"
-#ifndef MY_HEADER_FILE_IS_INCLUDED
+#ifndef MESSAGES_H
 
-#define MY_HEADER_FILE_IS_INCLUDED
+#define MESSAGES_H
 
 #include "Messages.h"
 
