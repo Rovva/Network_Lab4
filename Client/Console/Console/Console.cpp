@@ -65,9 +65,12 @@ int main()
     //std::cout << "Local client ID: " << localClientID << std::endl;
     //std::cout << "Local client position: " << localStartingPosition.x << std::endl;
     int moveDirection = 0;
+    Coordinate newPos, oldPos;
+    oldPos.x = 0; oldPos.y = 0;
+    newPos.x = 0; newPos.y = 0;
     while (1) {
-        int newX, newY, oldX, oldY;
-        Coordinate newPos, oldPos;
+        oldPos.x = 0; oldPos.y = 0;
+        newPos.x = 0; newPos.y = 0;
         std::cout << "Local client id is: " << localClientID << " Which direction?\n";
         std::cin >> moveDirection;
 
@@ -91,6 +94,11 @@ int main()
             newPos.x = oldPos.x + 1;
             newPos.y = oldPos.y;
         }
+        
+        if (moveDirection == 5) {
+            std::cout << "Current position: X: " << oldPos.x << " Y: " << oldPos.y << "\n";
+        }
+
         std::cout << "New coordinates. X: " << newPos.x << " Y: " << newPos.y << "\n";
         writer->sendMoveEvent(localClientID, newPos, &seq);
     }

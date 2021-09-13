@@ -67,11 +67,18 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                         //std::cout << "Player ID: " << newPlayer->msg.head.id << " X: " << newPlayer->pos.x << "Y: " << newPlayer->pos.y << "\n";
                         //*localClientID = newplayer->msg.head.id;
                         //*startPosition = newplayer->pos;
+                    bool playerFound = false;
                     for (int i = 0; i < clients->size(); i++) {
                         if (clients->at(i)->getClientID() == newPlayer->msg.head.id) {
                             clients->at(i)->changeCoordinate(newPlayer->pos);
                             std::cout << "Player ID: " << clients->at(i)->getClientID() << " X: " << clients->at(i)->getPosition().x << " Y: " << clients->at(i)->getPosition().y << "\n";
+                            playerFound = true;
                         }
+                    }
+                    if (playerFound == false) {
+                        Client* client;
+                        client = new Client(newPlayer->msg.head.id, newPlayer->pos);
+                        clients->push_back(client);
                     }
                 }
             }
