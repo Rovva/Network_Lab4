@@ -81,6 +81,16 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                         clients->push_back(client);
                     }
                 }
+            } else if (msgHead->type == Event) {
+                std::cout << "Event message detected.\n";
+            } else if (msgHead->type == Leave) {
+                LeaveMsg* playerLeave = (LeaveMsg*)recvbuf;
+                for (int i = 0; i < clients->size(); i++) {
+                    if (clients->at(i)->getClientID() == playerLeave->head.id) {
+                        clients->erase(clients->begin() + i);
+                        std::cout << "Client with ID: " << i << " has left the game.\n";
+                    }
+                }
             }
         } else if (iResult == 0)
             printf("Connection closed\n");
