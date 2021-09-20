@@ -1,3 +1,3 @@
 ﻿  Console.cpp
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\Console.cpp(77,27): warning C4018: '<': signed/unsigned mismatch
-  Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
+C:\Users\chris\Documents\GitHub\Network_Lab4\Client\Console\Console\Console.cpp(61,27): warning C4018: '<': signed/unsigned mismatch
+  Console.vcxproj -> C:\Users\chris\Documents\GitHub\Network_Lab4\Client\Console\Debug\Console.exe

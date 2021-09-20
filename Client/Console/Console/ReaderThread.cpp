@@ -80,6 +80,14 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                         client = new Client(newPlayer->msg.head.id, newPlayer->pos);
                         clients->push_back(client);
                     }
+                } else if (chgMsg->type == PlayerLeave) {
+                    std::cout << "Player with ID: " << chgMsg->head.id << " has left the game.\n";
+                    for (int i = 0; i < clients->size(); i++) {
+                        if (clients->at(i)->getClientID() == chgMsg->head.id) {
+                            clients->erase(clients->begin() + i);
+                            std::cout << "Player with ID: " << chgMsg->head.id << " has been removed from the list of players.\n";
+                        }
+                    }
                 }
             } else if (msgHead->type == Event) {
                 std::cout << "Event message detected.\n";

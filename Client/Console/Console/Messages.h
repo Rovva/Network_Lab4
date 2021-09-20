@@ -69,6 +69,10 @@ struct NewPlayerPositionMsg {
     Coordinate dir; //New object direction
 };
 
+struct PlayerLeaveMsg {
+    ChangeMsg msg;
+};
+
 // Messages of type Event (Client -> Server)
 enum EventType
 {

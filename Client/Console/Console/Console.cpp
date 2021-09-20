@@ -44,26 +44,10 @@ int main()
     localStartingPosition.x = -200;
     localStartingPosition.y = -200;
 
-    //ReaderThread* readerThread;
-    //readerThread = new ReaderThread(ConnectSocket);
     std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition, &clients);
     WriterThread *writer = new WriterThread(ConnectSocket);
-    //Sleep(50);
     writer->sendJoin();
-    // I found no other way to get starting coordinates then sending a wrong move.
-    //Sleep(100);
-    //writer->sendMoveEvent(localClientID, localStartingPosition, &seq);
-    //Client *localClient;
-    //localClient = new Client(localClientID, localStartingPosition);
-
-    //std::thread writer(WriterThread(ConnectSocket));
-    //readerThread->runThread();
     int direction = 0;
-    //Sleep(1000);
-    //writer->sendJoin();
-    //Sleep(5000);
-    //std::cout << "Local client ID: " << localClientID << std::endl;
-    //std::cout << "Local client position: " << localStartingPosition.x << std::endl;
     int moveDirection = 0;
     Coordinate newPos, oldPos;
     oldPos.x = 0; oldPos.y = 0;
@@ -84,23 +68,24 @@ int main()
         if (moveDirection == 2) {
             newPos.x = oldPos.x;
             newPos.y = oldPos.y - 1;
+            writer->sendMoveEvent(localClientID, newPos, &seq);
         } else if (moveDirection == 8) {
             newPos.x = oldPos.x;
             newPos.y = oldPos.y + 1;
+            writer->sendMoveEvent(localClientID, newPos, &seq);
         } else if (moveDirection == 4) {
             newPos.x = oldPos.x - 1;
             newPos.y = oldPos.y;
+            writer->sendMoveEvent(localClientID, newPos, &seq);
         } else if (moveDirection == 6) {
             newPos.x = oldPos.x + 1;
             newPos.y = oldPos.y;
+            writer->sendMoveEvent(localClientID, newPos, &seq);
         }
         
         if (moveDirection == 5) {
             std::cout << "Current position: X: " << oldPos.x << " Y: " << oldPos.y << "\n";
         }
-
-        std::cout << "New coordinates. X: " << newPos.x << " Y: " << newPos.y << "\n";
-        writer->sendMoveEvent(localClientID, newPos, &seq);
     }
     // cleanup
     closesocket(ConnectSocket);

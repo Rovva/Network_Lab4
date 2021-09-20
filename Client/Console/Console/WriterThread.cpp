@@ -19,7 +19,7 @@ void WriterThread::sendJoin() {
 void WriterThread::sendLeave(int id) {
     int sendMsg = 0;
     LeaveMsg leaveMsg;
-    leaveMsg.head.id = 0;
+    leaveMsg.head.id = id;
     leaveMsg.head.length = sizeof(leaveMsg);
     leaveMsg.head.type = Leave;
 
