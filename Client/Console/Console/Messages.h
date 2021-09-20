@@ -1,3 +1,6 @@
+// Denna headerfil innehåller alla structor och enums för de meddelanden som gäller för kommunikationen
+// mellan klient och server.
+
 #define MAXNAMELEN  32
 
 enum MsgType {
@@ -76,7 +79,7 @@ struct PlayerLeaveMsg {
 // Messages of type Event (Client -> Server)
 enum EventType
 {
-    Move
+    Move;
 };
 // Included first in all Event messages
 struct EventMsg

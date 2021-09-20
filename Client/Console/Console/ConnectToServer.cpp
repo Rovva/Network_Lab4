@@ -1,10 +1,12 @@
+// Klassen för att hantera anslutningen till servern.
+
 #include "ConnectToServer.h"
 ConnectToServer::ConnectToServer() {
     iResult = 0;
 }
 
 int ConnectToServer::setupConnection() {
-    // Initialize Winsock
+    // Initiera WinSock.
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
         printf("WSAStartup failed: %d\n", iResult);
@@ -18,7 +20,7 @@ int ConnectToServer::setupConnection() {
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
 
-    // Resolve the server address and port
+    // Hantera ipaddress och portnummer till servern.
     iResult = getaddrinfo("127.0.0.1", "49152", &hints, &result);
     if (iResult != 0) {
         printf("getaddrinfo failed: %d\n", iResult);
