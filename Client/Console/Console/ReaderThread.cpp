@@ -1,8 +1,8 @@
-// Denna klass har hand om all data som kommer från servern till klienterna.
+// This class handles all the data that is sent to all the clients from the server.
 
 #include "ReaderThread.h"
 
-// Kontruktor som tar emot en Socket.
+// Constructor that takes and stores the socket.
 ReaderThread::ReaderThread(SOCKET Socket) {
     ConnectSocket = Socket;
     std::cout << "Starting ReaderThread." << std::endl;
@@ -21,37 +21,38 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
             msgHead = (MsgHead*)recvbuf;
             *seq = msgHead->seq_no;
             
-            // Börjar med att kolla om meddelandet är Join.
+            // Start by checking if the message is a "Join".
             if (msgHead->type == Join) {
                 JoinMsg* joinMsg = (JoinMsg*)recvbuf;
-                // Om lockala klientens ID är -1 så sätt ID till vad som skickades från servern.
+                // If the local clients ID is -1 then store the ID sent from the server.
                 if (*localClientID == -1) {
                     std::cout << "Joining server.\n";
                     *localClientID = joinMsg->head.id;
                     while (*localClientID == -1) {
 
                     }
-                    // Ställ in positioner till ogiltligt värde.
+                    // Store invalid positions for the client.
                     Coordinate cord;
                     cord.x = -200;
                     cord.y = -200;
-                    // Skapa ett client objekt och lagra data i det.
+                    // Create a client object and store the data in it.
                     Client* client;
                     client = new Client(joinMsg->head.id, cord);
                     clients->push_back(client);
                     std::cout << "Player ID is: " << *localClientID << std::endl;
                 }
-            // Ifall meddelandet från servern är Change.
+            // If the message from server is "Change".
             } else if (msgHead->type == Change) {
                 std::cout << "Change detected.\n";
                 ChangeMsg* chgMsg = (ChangeMsg*)msgHead;
-                // Om meddelandet är New Player.
+                // If the "ChageType" is NewPlayer.
                 if (chgMsg->type == NewPlayer) {
                     std::cout << "New player detected.\n";
                     NewPlayerMsg* newPlayer = (NewPlayerMsg*)chgMsg;
-                    // Boolean clientFound är false om klient ID inte redan finns i vektorn.
+
                     bool clientFound = false;
-                    // Om klient ID inte är den lokala klientens ID så sök efter den.
+
+                    // If the client ID is not the local clients ID so go through all the clients to find it.
                     if (newPlayer->msg.head.id != *localClientID) {
                         std::cout << "Enemy has joined the server. ID: " << newPlayer->msg.head.id << "\n";
                         for (int i = 0; i < clients->size(); i++) {
@@ -60,7 +61,8 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                                 break;
                             }
                         }
-                        // Om klient ID inte hittas så skapa ett Client objekt och lagra i klientvektorn.
+                        // If the client ID cannot be found, then create a new client object and store it in
+                        // the vector with other clients.
                         if (clientFound == false) {
                             Coordinate cord;
                             cord.x = -200;
@@ -70,13 +72,14 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                             clients->push_back(client);
                         }
                     }
-                // Om meddelandet är New player position.
+                // If "ChangeType" is NewPlayerPosition.
                 } else if (chgMsg->type == NewPlayerPosition) {
                     std::cout << "New player position detected.\n";
                     NewPlayerPositionMsg* newPlayer = (NewPlayerPositionMsg*)recvbuf;
-                    // Boolean som är false om klientens ID inte hittas.
+
                     bool playerFound = false;
-                    // Gå igenom vektorn med klienter och se ifall ID från meddelandet finns.
+
+                    // Go through the vector with clients and check if the ID in the message exist.
                     for (int i = 0; i < clients->size(); i++) {
                         if (clients->at(i)->getClientID() == newPlayer->msg.head.id) {
                             clients->at(i)->changeCoordinate(newPlayer->pos);
@@ -84,16 +87,17 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                             playerFound = true;
                         }
                     }
-                    // Ifall klientens ID inte hittas så skapa en ny.
+                    // If the ID in the message is not found, then create a new client.
                     if (playerFound == false) {
                         Client* client;
                         client = new Client(newPlayer->msg.head.id, newPlayer->pos);
                         clients->push_back(client);
                     }
-                // Ifall meddelandet är Player leave.
+                // If "ChangeType" is PlayerLeave.
                 } else if (chgMsg->type == PlayerLeave) {
                     std::cout << "Player with ID: " << chgMsg->head.id << " has left the game.\n";
-                    // Leta reda på om klientens ID finns i vektorn med klienter och om den finns så ta bort klienten.
+                    // Go through the vector with clients and check if the ID in the message exist.
+                    // If it does, delete the client.
                     for (int i = 0; i < clients->size(); i++) {
                         if (clients->at(i)->getClientID() == chgMsg->head.id) {
                             clients->erase(clients->begin() + i);

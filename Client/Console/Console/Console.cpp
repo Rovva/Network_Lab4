@@ -1,4 +1,4 @@
-// Konsollklienten för Laboration 4
+// Console client for Laboration 4
 //
 #pragma once
 #include <iostream>
@@ -29,31 +29,30 @@ SOCKET ConnectSocket;
 
 int main()
 {
-    // Skapa en vektor som lagrar alla klienter.
+    // Create a vector to store all the clients.
     std::vector<Client*> clients;
 
-    // Skapa ett objekt som ansvarar för att ansluta till servern.
+    // Create a object that handles the connection to the server.
     ConnectToServer *serverConnection;
     serverConnection = new ConnectToServer();
     serverConnection->setupConnection();
-    // Lagra den socket som skapas i ConnectSocket.
+    // Store the socket created above from ConnectToServer object.
     SOCKET ConnectSocket = serverConnection->getSocket();
 
-    // Lokala variabler för att hålla koll på den lokala klientens data.
+    // Local variables for the local client.
     int seq = 0;
     int localClientID = -1;
     Coordinate localStartingPosition;
-    // Ogiltliga koordinater som startposition.
+    // Assign invalid position for the client.
     localStartingPosition.x = -200;
     localStartingPosition.y = -200;
-
-    // Skapa objekt som ansvarar för att läsa alla meddelanden som skickas från servern till klienten.
+    // Create the object that is responsible for reading all the messages sent from the server to clients.
     std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition, &clients);
     WriterThread *writer = new WriterThread(ConnectSocket);
-    // Skicka meddelande om att ansluta till servern.
+    // Send a Join message to server.
     writer->sendJoin();
 
-    // Lokala variabler för att skicka nya positiondata till servern.
+    // Local variables needed for calculating new position for the local client.
     int moveDirection = 0;
     Coordinate newPos, oldPos;
     oldPos.x = 0; oldPos.y = 0;
@@ -63,12 +62,12 @@ int main()
         oldPos.x = 0; oldPos.y = 0;
         newPos.x = 0; newPos.y = 0;
 
-        // Mata in siffror för att förflytta klienten.
-        // 4 = Vänster, 6 = Höger, 8 = Uppåt, 2 = Neråt
+        // Number input to move the client around.
+        // 4 = Left, 6 = Right, 8 = Upwards, 2 = Downwards.
         std::cout << "Local client id is: " << localClientID << " Which direction?\n";
         std::cin >> moveDirection;
 
-        // Loopa igenom alla klienter för att hitta positionen som den lokala klienten har just nu.
+        // Go through all the clients in the vector to find the current position for the local client.
         for (int i = 0; i < clients.size(); i++) {
             std::cout << "Client: " << clients.at(i)->getClientID() << " is in the list.\n";
             if (clients.at(i)->getClientID() == localClientID) {
@@ -76,7 +75,7 @@ int main()
             }
         }
 
-        // Beräkning av den nya positionen som blir när man förflyttar sig åt valfritt håll.
+        // Calculating the new position depending on input.
         if (moveDirection == 2) {
             newPos.x = oldPos.x;
             newPos.y = oldPos.y - 1;
@@ -94,7 +93,7 @@ int main()
             newPos.y = oldPos.y;
             writer->sendMoveEvent(localClientID, newPos, &seq);
         }
-        // Om man trycker 5 så får man upp den nuvarande positionen.
+        // Number 5 is used to display the current position.
         if (moveDirection == 5) {
             std::cout << "Current position: X: " << oldPos.x << " Y: " << oldPos.y << "\n";
         }
