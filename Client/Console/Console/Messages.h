@@ -79,7 +79,7 @@ struct PlayerLeaveMsg {
 // Messages of type Event (Client -> Server)
 enum EventType
 {
-    Move;
+    Move
 };
 // Included first in all Event messages
 struct EventMsg

@@ -2,6 +2,9 @@ package server;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -44,9 +47,60 @@ public class GUI implements Observer {
 
 		this.layout.putConstraint(SpringLayout.NORTH, board, 0, SpringLayout.NORTH, contentPane);
 		this.layout.putConstraint(SpringLayout.WEST, board, 0, SpringLayout.WEST, contentPane);
+		this.initKeys();
 
 	}
+	public void addMoveListener(KeyListener movelistener) {
+		board.grabFocus();
+		board.addKeyListener(movelistener);
+	}
+	
+    private void initKeys() {
+    	this.addMoveListener(
+    			new KeyListener() {
+    				@Override
+    				public void keyPressed(KeyEvent ke) {
+    			        int keyCode = ke.getKeyCode();
+    			        int direction = 0;
+    			        
+    			        // Check if any of the pressed keys are valid.
+    			        if(keyCode == KeyEvent.VK_LEFT) {
+    			        	System.out.println("Left");
+    			        	//gameState.movePlayer(1);
+    			        	direction = 1;
+    			        } else if(keyCode == KeyEvent.VK_UP) {
+    			        	System.out.println("UP");
+    			        	//gameState.movePlayer(2);
+    			        	direction = 2;
+    			        } else if(keyCode == KeyEvent.VK_RIGHT) {
+    			        	System.out.println("Right");
+    			        	//gameState.movePlayer(3);
+    			        	direction = 3;
+    			        } else if(keyCode == KeyEvent.VK_DOWN) {
+    			        	System.out.println("Down");
+    			        	//gameState.movePlayer(4);
+    			        	direction = 4;
+    			        } else if(keyCode == KeyEvent.VK_SPACE) {
+    			        	System.out.println("Hit");
+    			        	direction = 5;
+    			        }
+			        	System.out.println("Sending stuff.");
+						//controller.sendInput(direction);
+    			      }
 
+					@Override
+					public void keyReleased(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void keyTyped(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+    			});
+    }
 	@Override
 	public void update(Observable o, Object arg) {
 		frame.repaint();

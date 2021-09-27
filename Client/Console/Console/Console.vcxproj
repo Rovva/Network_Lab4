@@ -143,6 +143,7 @@
     <ClCompile Include="ConnectToServer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="ReaderThread.cpp" />
+    <ClCompile Include="ToGui.cpp" />
     <ClCompile Include="WriterThread.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="ConnectToServer.h" />
     <ClInclude Include="Messages.h" />
     <ClInclude Include="ReaderThread.h" />
+    <ClInclude Include="ToGui.h" />
     <ClInclude Include="WriterThread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

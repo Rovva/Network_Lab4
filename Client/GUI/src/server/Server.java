@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Observable;
@@ -30,14 +31,14 @@ public class Server extends Observable {
 	public Server(int port) throws SocketException, UnknownHostException {
 		// Create a Datagram socket with port given as parameter and connect to IPv6
 		// locahost address.
-		this.socketUDP = new DatagramSocket(port, Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}));
+		this.socketUDP = new DatagramSocket(port,InetAddress.getByAddress(new byte[] {127, 0, 0, 1}));
+		// Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})
 		this.board = new Board(this, 201, 201, 5);
 		this.gui = new GUI(this.board);
 		reader = new packetReader(socketUDP, board);
 		thread = new Thread(reader);
 		thread.start();
 	}
-	
 	/**
 	 * packetReader is a class that will be run as a thread and its purpose is managing
 	 * the communication from client to server.
@@ -66,6 +67,7 @@ public class Server extends Observable {
 		 * @param data The byte array containing data.
 		 */
 		private void packetProcessor(byte[] data) {
+			System.out.println(data);
 			if(data[0] == Messages.CHANGE.ordinal()) {
 				System.out.println("Changing color...");
 				// Call the method setSquareColor in the Board object and give
@@ -97,6 +99,7 @@ public class Server extends Observable {
 	            try {
 					socketUDP.receive(packetUDP);
 					dataUDP = packetUDP.getData();
+					System.out.println(dataUDP);
 		            System.out.println(dataUDP[0] + " " + dataUDP[1] + " " + dataUDP[2] + " " + dataUDP[3]);
 		            // Send the received data to packetProcessor.
 		            this.packetProcessor(dataUDP);

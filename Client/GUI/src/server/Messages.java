@@ -8,5 +8,6 @@ package server;
  */
 public enum Messages {
 	CHANGE,
+	MOVE,
 	RESET
 }

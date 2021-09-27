@@ -16,6 +16,7 @@
 #include "ReaderThread.h"
 #include "WriterThread.h"
 #include "Client.h"
+#include "ToGui.h"
 
 #ifndef MESSAGES_H
 #define MESSAGES_H
@@ -24,6 +25,12 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 #define DEFAULT_PORT "49152"
+
+
+#define SERVER "127.0.0.1"	//ip address of udp server
+#define BUFLEN 512	//Max length of buffer
+#define PORT 4444	//The port on which to listen for incoming data
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 SOCKET ConnectSocket;
 
@@ -58,14 +65,18 @@ int main()
     oldPos.x = 0; oldPos.y = 0;
     newPos.x = 0; newPos.y = 0;
 
+    ToGui *togui = new ToGui();
+
     while (1) {
         oldPos.x = 0; oldPos.y = 0;
         newPos.x = 0; newPos.y = 0;
+        togui->SendTest();
 
         // Number input to move the client around.
         // 4 = Left, 6 = Right, 8 = Upwards, 2 = Downwards.
         std::cout << "Local client id is: " << localClientID << " Which direction?\n";
         std::cin >> moveDirection;
+
 
         // Go through all the clients in the vector to find the current position for the local client.
         for (int i = 0; i < clients.size(); i++) {
