@@ -31,7 +31,7 @@ public class Server extends Observable {
 	public Server(int port) throws SocketException, UnknownHostException {
 		// Create a Datagram socket with port given as parameter and connect to IPv6
 		// locahost address.
-		this.socketUDP = new DatagramSocket(port,InetAddress.getByAddress(new byte[] {127, 0, 0, 1}));
+		this.socketUDP = new DatagramSocket(port,Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}));
 		// Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})
 		this.board = new Board(this, 201, 201, 5);
 		this.gui = new GUI(this.board);

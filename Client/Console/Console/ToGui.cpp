@@ -13,7 +13,8 @@ void ToGui::SendTest() {
     WSADATA wsaData;
 
     SOCKET SendSocket = INVALID_SOCKET;
-    sockaddr_in RecvAddr;
+    sockaddr_in6 RecvAddr;
+    ZeroMemory(&RecvAddr, sizeof RecvAddr);
 
     unsigned short Port = 4444;
 
@@ -29,7 +30,7 @@ void ToGui::SendTest() {
 
     //---------------------------------------------
     // Create a socket for sending data
-    SendSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    SendSocket = socket(PF_INET6, SOCK_DGRAM, IPPROTO_UDP);
     if (SendSocket == INVALID_SOCKET) {
         wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
         WSACleanup();
@@ -38,11 +39,11 @@ void ToGui::SendTest() {
     // Set up the RecvAddr structure with the IP address of
     // the receiver (in this example case "192.168.1.1")
     // and the specified port number.
-    RecvAddr.sin_family = AF_INET;
-    RecvAddr.sin_port = htons(Port);
+    RecvAddr.sin6_family = PF_INET6;
+    RecvAddr.sin6_port = htons(Port);
     //RecvAddr.sin6_addr = in6addr_loopback;
     //RecvAddr.sin6_addr = inet_addr("::1");
-    inet_pton(AF_INET, "127.0.0.1", &RecvAddr.sin_addr);
+    inet_pton(PF_INET6, "::1", &RecvAddr.sin6_addr);
     char test[] = { 0,1,1,2 };
 
     //---------------------------------------------
