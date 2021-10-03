@@ -22,6 +22,6 @@ private:
 	SOCKET ConnectSocket;
 public:
 	ReaderThread(SOCKET ConnectSocket);
-	void operator()(int *seq, int *localClientID, Coordinate *startPosition, std::vector<Client*> *clients);
+	void operator()(int *seq, int *localClientID, Coordinate *startPosition, std::vector<Client*> *clients, bool *updateFlag);
 
 };

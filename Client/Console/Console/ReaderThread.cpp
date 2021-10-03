@@ -8,7 +8,7 @@ ReaderThread::ReaderThread(SOCKET Socket) {
     std::cout << "Starting ReaderThread." << std::endl;
 }
 
-void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPosition, std::vector<Client*> *clients) {
+void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPosition, std::vector<Client*> *clients, bool *updateFlag) {
     int recvbuflen = 512;
     int iResult;
 
@@ -71,6 +71,7 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                             client = new Client(newPlayer->msg.head.id, cord);
                             clients->push_back(client);
                         }
+                        *updateFlag = true;
                     }
                 // If "ChangeType" is NewPlayerPosition.
                 } else if (chgMsg->type == NewPlayerPosition) {
@@ -93,6 +94,7 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                         client = new Client(newPlayer->msg.head.id, newPlayer->pos);
                         clients->push_back(client);
                     }
+                    *updateFlag = true;
                 // If "ChangeType" is PlayerLeave.
                 } else if (chgMsg->type == PlayerLeave) {
                     std::cout << "Player with ID: " << chgMsg->head.id << " has left the game.\n";
@@ -104,6 +106,7 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                             std::cout << "Player with ID: " << chgMsg->head.id << " has been removed from the list of players.\n";
                         }
                     }
+                    *updateFlag = true;
                 }
             } else if (msgHead->type == Event) {
                 std::cout << "Event message detected.\n";
@@ -115,6 +118,7 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
                         std::cout << "Client with ID: " << i << " has left the game.\n";
                     }
                 }
+                *updateFlag = true;
             }
         } else if (iResult == 0)
             printf("Connection closed\n");

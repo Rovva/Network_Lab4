@@ -53,9 +53,16 @@ int main()
     // Assign invalid position for the client.
     localStartingPosition.x = -200;
     localStartingPosition.y = -200;
+
+    bool updateClients = false;
+
     // Create the object that is responsible for reading all the messages sent from the server to clients.
-    std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition, &clients);
+    std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition, &clients, &updateClients);
     WriterThread *writer = new WriterThread(ConnectSocket);
+
+    //ToGui* togui = new ToGui();
+    std::thread toGui(ToGui(), &localClientID, &clients, &updateClients);
+
     // Send a Join message to server.
     writer->sendJoin();
 
@@ -65,12 +72,11 @@ int main()
     oldPos.x = 0; oldPos.y = 0;
     newPos.x = 0; newPos.y = 0;
 
-    ToGui *togui = new ToGui();
 
     while (1) {
         oldPos.x = 0; oldPos.y = 0;
         newPos.x = 0; newPos.y = 0;
-        togui->SendTest();
+        //togui->SendTest();
 
         // Number input to move the client around.
         // 4 = Left, 6 = Right, 8 = Upwards, 2 = Downwards.

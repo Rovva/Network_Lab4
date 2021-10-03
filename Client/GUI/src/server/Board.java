@@ -67,6 +67,8 @@ public class Board extends JPanel implements Observer {
 		 * @param color Integer representing the color.
 		 */
 		public void setSquareColor(int x, int y, int color) {
+			//x = x + 98;
+			//y = y + 98;
 			this.map[x][y].setColor(color);
 			System.out.println("Color " + color + " set at " + x + " " + y);
 		}

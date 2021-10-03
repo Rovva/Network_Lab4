@@ -72,7 +72,9 @@ public class Server extends Observable {
 				System.out.println("Changing color...");
 				// Call the method setSquareColor in the Board object and give
 				// coordinates and color integer as parameter.
-				board.setSquareColor((int) data[1], (int) data[2], (int) data[3]);
+				int x = (int) data[1] + 100;
+				int y = 100 - (int) data[2];
+				board.setSquareColor(x, y, (int) data[3]);
 				setChanged();
 				notifyObservers();
 			} else if(data[0] == Messages.RESET.ordinal()) {

@@ -6,14 +6,9 @@
 #define PORT 4444	//The port on which to listen for incoming data
 
 ToGui::ToGui() {
-}
-
-void ToGui::SendTest() {
-    int iResult;
     WSADATA wsaData;
 
-    SOCKET SendSocket = INVALID_SOCKET;
-    sockaddr_in6 RecvAddr;
+    SendSocket = INVALID_SOCKET;
     ZeroMemory(&RecvAddr, sizeof RecvAddr);
 
     unsigned short Port = 4444;
@@ -44,16 +39,57 @@ void ToGui::SendTest() {
     //RecvAddr.sin6_addr = in6addr_loopback;
     //RecvAddr.sin6_addr = inet_addr("::1");
     inet_pton(PF_INET6, "::1", &RecvAddr.sin6_addr);
-    char test[] = { 0,1,1,2 };
+}
+
+void ToGui::SendMoveToGui(int x, int y, int z) {
+    char test[] = { 0,x,y,z };
 
     //---------------------------------------------
     // Send a datagram to the receiver
-    wprintf(L"Sending a datagram to the receiver...\n");
+    wprintf(L"Sending a test to the receiver...\n");
     iResult = sendto(SendSocket,
         (char*)&test, sizeof(test), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);
         WSACleanup();
+    }
+}
+
+void ToGui::ResetBoard() {
+    char test[] = { 1 };
+
+    //---------------------------------------------
+    // Send a datagram to the receiver
+    wprintf(L"Sending a reset to the receiver...\n");
+    iResult = sendto(SendSocket,
+        (char*)&test, sizeof(test), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
+    if (iResult == SOCKET_ERROR) {
+        wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
+        closesocket(SendSocket);
+        WSACleanup();
+    }
+}
+
+void ToGui::operator()(int *localClientID, std::vector<Client*> *clients, bool *updateFlag) {
+    while (1) {
+        if (*updateFlag == true) {
+            int x = 0, y = 0, z = 0;
+            this->ResetBoard();
+            for (int i = 0; i < clients->size(); i++) {
+                if (clients->at(i)->getClientID() == *localClientID) {
+                    x = clients->at(i)->getPosition().x;
+                    y = clients->at(i)->getPosition().y;
+                    z = 2;
+                    this->SendMoveToGui(x , y, z);
+                } else {
+                    x = clients->at(i)->getPosition().x;
+                    y = clients->at(i)->getPosition().y;
+                    z = 3;
+                    this->SendMoveToGui(x, y, z);
+                }
+            }
+            *updateFlag = false;
+        }
     }
 }
