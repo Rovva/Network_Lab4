@@ -11,6 +11,7 @@
 
 #include <thread>
 #include <vector>
+#include <string>
 
 #include "ConnectToServer.h"
 #include "ReaderThread.h"
@@ -58,10 +59,21 @@ int main()
 
     // Create the object that is responsible for reading all the messages sent from the server to clients.
     std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition, &clients, &updateClients);
+
+    reader.detach();
+
     WriterThread *writer = new WriterThread(ConnectSocket);
 
-    //ToGui* togui = new ToGui();
-    std::thread toGui(ToGui(), &localClientID, &clients, &updateClients);
+    std::string option;
+
+    std::cout << "Start game with GUI? (y/n)\n";
+    std::cin >> option;
+
+    if (option == "y") {
+        std::cout << "Starting with GUI...\n";
+        std::thread toGui(ToGui(), &localClientID, &clients, &updateClients);
+        toGui.detach();
+    }
 
     // Send a Join message to server.
     writer->sendJoin();
@@ -86,7 +98,8 @@ int main()
 
         // Go through all the clients in the vector to find the current position for the local client.
         for (int i = 0; i < clients.size(); i++) {
-            std::cout << "Client: " << clients.at(i)->getClientID() << " is in the list.\n";
+            std::cout << "Client: " << clients.at(i)->getClientID() << " is in the list. X: "
+                << clients.at(i)->getPosition().x << " Y: " << clients.at(i)->getPosition().y << "\n";
             if (clients.at(i)->getClientID() == localClientID) {
                 oldPos = clients.at(i)->getPosition();
             }

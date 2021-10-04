@@ -42,13 +42,11 @@ ToGui::ToGui() {
 }
 
 void ToGui::SendMoveToGui(int x, int y, int z) {
-    char test[] = { 0,x,y,z };
+    char move[] = { 0, x, y, z };
 
-    //---------------------------------------------
-    // Send a datagram to the receiver
-    wprintf(L"Sending a test to the receiver...\n");
+    std::cout << "Updating GUI with X: " << x << " Y: " << y << " Color: " << z << "\n";
     iResult = sendto(SendSocket,
-        (char*)&test, sizeof(test), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
+        (char*)&move, sizeof(move), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);
@@ -57,13 +55,11 @@ void ToGui::SendMoveToGui(int x, int y, int z) {
 }
 
 void ToGui::ResetBoard() {
-    char test[] = { 1 };
+    char reset[] = { 1 };
 
-    //---------------------------------------------
-    // Send a datagram to the receiver
-    wprintf(L"Sending a reset to the receiver...\n");
+    wprintf(L"Sending a reset to the GUI...\n");
     iResult = sendto(SendSocket,
-        (char*)&test, sizeof(test), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
+        (char*)&reset, sizeof(reset), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);
@@ -77,17 +73,14 @@ void ToGui::operator()(int *localClientID, std::vector<Client*> *clients, bool *
             int x = 0, y = 0, z = 0;
             this->ResetBoard();
             for (int i = 0; i < clients->size(); i++) {
+                x = clients->at(i)->getPosition().x;
+                y = clients->at(i)->getPosition().y;
                 if (clients->at(i)->getClientID() == *localClientID) {
-                    x = clients->at(i)->getPosition().x;
-                    y = clients->at(i)->getPosition().y;
-                    z = 2;
-                    this->SendMoveToGui(x , y, z);
+                    z = 4;
                 } else {
-                    x = clients->at(i)->getPosition().x;
-                    y = clients->at(i)->getPosition().y;
-                    z = 3;
-                    this->SendMoveToGui(x, y, z);
+                    z = 2;
                 }
+                this->SendMoveToGui(x, y, z);
             }
             *updateFlag = false;
         }
