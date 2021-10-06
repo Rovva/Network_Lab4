@@ -5,7 +5,9 @@
 FromGui::FromGui() {
 	WSADATA wsa;
 
-	slen = sizeof(si_other);
+	slen = sizeof(server);
+	ZeroMemory(&server, sizeof server);
+	ZeroMemory(&si_other, sizeof si_other);
 
 	//Initialise winsock
 	printf("\nInitialising Winsock...");
@@ -26,9 +28,9 @@ FromGui::FromGui() {
 	server.sin6_port = htons(PORT);
 	inet_pton(PF_INET6, "::1", &server.sin6_addr);
 
-	si_other.sin6_family = AF_INET6;
-	si_other.sin6_port = htons(PORT);
-	inet_pton(PF_INET6, "::1", &si_other.sin6_addr);
+	//si_other.sin6_family = AF_INET6;
+	//si_other.sin6_port = htons(PORT);
+	//server.sin6_addr = in6addr_any;
 
 	//Bind
 	if (bind(RecvSocket, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR)
@@ -38,7 +40,7 @@ FromGui::FromGui() {
 	}
 }
 
-void FromGui::operator()() {
+void FromGui::operator()(WriterThread writer) {
 	char buf[1024];
 	while (1)
 	{
@@ -49,12 +51,12 @@ void FromGui::operator()() {
 		memset(buf, '\0', BUFLEN);
 
 		//try to receive some data, this is a blocking call
-		if ((recv_len = recvfrom(RecvSocket, buf, BUFLEN, 0, (struct sockaddr*)&si_other, &slen)) == SOCKET_ERROR)
+		if ((recv_len = recvfrom(RecvSocket, buf, BUFLEN, 0, (struct sockaddr*)&server, &slen)) == SOCKET_ERROR)
 		{
 			printf("recvfrom() failed with error code : %d", WSAGetLastError());
 			exit(EXIT_FAILURE);
 		}
 		//printf("Received packet from %s:%d\n", inet_ntoa(si_other), ntohs(si_other.sin6_port));
-		printf("Data: %s\n", buf);
+		printf("Data: %i\n", buf);
 	}
 }

@@ -9,16 +9,19 @@
 #if (_WIN32_WINNT == 0x0500)
 #include <tpipv6.h>
 #endif
+
+#include "WriterThread.h"
+
 #pragma comment(lib, "Ws2_32.lib")
 
 class FromGui {
 private:
 	SOCKET RecvSocket;
 	sockaddr_in6 RecvAddr;
-	struct sockaddr_in6 server, si_other;
+	sockaddr_in6 server, si_other;
 	int slen, recv_len;
 	int iResult;
 public:
 	FromGui();
-	void operator()();
+	void operator()(WriterThread writer);
 };

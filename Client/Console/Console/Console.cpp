@@ -18,6 +18,7 @@
 #include "WriterThread.h"
 #include "Client.h"
 #include "ToGui.h"
+#include "FromGui.h"
 
 #ifndef MESSAGES_H
 #define MESSAGES_H
@@ -73,6 +74,8 @@ int main()
         std::cout << "Starting with GUI...\n";
         std::thread toGui(ToGui(), &localClientID, &clients, &updateClients);
         toGui.detach();
+        std::thread fromGui(FromGui(), *writer);
+        fromGui.detach();
     }
 
     // Send a Join message to server.

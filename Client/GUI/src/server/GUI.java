@@ -12,6 +12,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.Inet6Address;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Observable;
 /**
  * @author Christoffer Rova
  * @version 1.0
@@ -29,7 +36,11 @@ public class GUI implements Observer {
 	
 	int x_size = 1050, y_size = 1050;
 	
-	public GUI(Board board) {
+	DatagramSocket socketUDP;
+	DatagramPacket packetUDP;
+	byte[] dataUDP = new byte[4];
+	
+	public GUI(Board board) throws SocketException, UnknownHostException {
 		this.board = board;
 		
 		frame = new JFrame("Color changer");
@@ -48,11 +59,21 @@ public class GUI implements Observer {
 		this.layout.putConstraint(SpringLayout.NORTH, board, 0, SpringLayout.NORTH, contentPane);
 		this.layout.putConstraint(SpringLayout.WEST, board, 0, SpringLayout.WEST, contentPane);
 		this.initKeys();
+		
 
+		this.socketUDP = new DatagramSocket();
 	}
 	public void addMoveListener(KeyListener movelistener) {
 		board.grabFocus();
 		board.addKeyListener(movelistener);
+	}
+	
+	public void sendUDP(byte[] data) throws IOException {
+		System.out.println(Inet6Address.getByAddress(null, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 4445).toString());
+		this.packetUDP = new DatagramPacket(dataUDP, dataUDP.length, Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}), 4445);
+		this.packetUDP.setData(data);
+		this.socketUDP.send(packetUDP);
+		
 	}
 	
     private void initKeys() {
@@ -66,23 +87,44 @@ public class GUI implements Observer {
     			        // Check if any of the pressed keys are valid.
     			        if(keyCode == KeyEvent.VK_LEFT) {
     			        	System.out.println("Left");
-    			        	//gameState.movePlayer(1);
-    			        	direction = 1;
+    			        	byte[] data = new byte[1];
+    			        	data[0] = 4;
+    			        	try {
+								sendUDP(data);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
     			        } else if(keyCode == KeyEvent.VK_UP) {
     			        	System.out.println("UP");
-    			        	//gameState.movePlayer(2);
-    			        	direction = 2;
+    			        	byte[] data = new byte[1];
+    			        	data[0] = 8;
+    			        	try {
+								sendUDP(data);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
     			        } else if(keyCode == KeyEvent.VK_RIGHT) {
     			        	System.out.println("Right");
-    			        	//gameState.movePlayer(3);
-    			        	direction = 3;
+    			        	byte[] data = new byte[1];
+    			        	data[0] = 6;
+    			        	try {
+								sendUDP(data);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
     			        } else if(keyCode == KeyEvent.VK_DOWN) {
     			        	System.out.println("Down");
-    			        	//gameState.movePlayer(4);
-    			        	direction = 4;
-    			        } else if(keyCode == KeyEvent.VK_SPACE) {
-    			        	System.out.println("Hit");
-    			        	direction = 5;
+    			        	byte[] data = new byte[1];
+    			        	data[0] = 2;
+    			        	try {
+								sendUDP(data);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
     			        }
 			        	System.out.println("Sending stuff.");
 						//controller.sendInput(direction);
