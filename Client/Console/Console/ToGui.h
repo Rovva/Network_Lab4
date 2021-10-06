@@ -16,7 +16,7 @@
 class ToGui {
 private:
 	SOCKET SendSocket;
-	sockaddr_in6 RecvAddr;
+	sockaddr_in6 SendAddr;
 	int iResult;
 public:
 	ToGui();

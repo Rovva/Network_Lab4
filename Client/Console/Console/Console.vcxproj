@@ -142,6 +142,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ConnectToServer.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="FromGui.cpp" />
     <ClCompile Include="ReaderThread.cpp" />
     <ClCompile Include="ToGui.cpp" />
     <ClCompile Include="WriterThread.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="ConnectToServer.h" />
+    <ClInclude Include="FromGui.h" />
     <ClInclude Include="Messages.h" />
     <ClInclude Include="ReaderThread.h" />
     <ClInclude Include="ToGui.h" />

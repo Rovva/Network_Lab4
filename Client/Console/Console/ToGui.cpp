@@ -9,7 +9,7 @@ ToGui::ToGui() {
     WSADATA wsaData;
 
     SendSocket = INVALID_SOCKET;
-    ZeroMemory(&RecvAddr, sizeof RecvAddr);
+    ZeroMemory(&SendAddr, sizeof SendAddr);
 
     unsigned short Port = 4444;
 
@@ -34,11 +34,11 @@ ToGui::ToGui() {
     // Set up the RecvAddr structure with the IP address of
     // the receiver (in this example case "192.168.1.1")
     // and the specified port number.
-    RecvAddr.sin6_family = PF_INET6;
-    RecvAddr.sin6_port = htons(Port);
+    SendAddr.sin6_family = PF_INET6;
+    SendAddr.sin6_port = htons(Port);
     //RecvAddr.sin6_addr = in6addr_loopback;
     //RecvAddr.sin6_addr = inet_addr("::1");
-    inet_pton(PF_INET6, "::1", &RecvAddr.sin6_addr);
+    inet_pton(PF_INET6, "::1", &SendAddr.sin6_addr);
 }
 
 void ToGui::SendMoveToGui(int x, int y, int z) {
@@ -46,7 +46,7 @@ void ToGui::SendMoveToGui(int x, int y, int z) {
 
     std::cout << "Updating GUI with X: " << x << " Y: " << y << " Color: " << z << "\n";
     iResult = sendto(SendSocket,
-        (char*)&move, sizeof(move), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
+        (char*)&move, sizeof(move), 0, (struct sockaddr*)&SendAddr, sizeof(SendAddr));
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);
@@ -59,7 +59,7 @@ void ToGui::ResetBoard() {
 
     wprintf(L"Sending a reset to the GUI...\n");
     iResult = sendto(SendSocket,
-        (char*)&reset, sizeof(reset), 0, (struct sockaddr*)&RecvAddr, sizeof(RecvAddr));
+        (char*)&reset, sizeof(reset), 0, (struct sockaddr*)&SendAddr, sizeof(SendAddr));
     if (iResult == SOCKET_ERROR) {
         wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
         closesocket(SendSocket);

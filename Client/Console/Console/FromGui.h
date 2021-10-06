@@ -13,10 +13,12 @@
 
 class FromGui {
 private:
-	SOCKET SendSocket;
+	SOCKET RecvSocket;
 	sockaddr_in6 RecvAddr;
+	struct sockaddr_in6 server, si_other;
+	int slen, recv_len;
 	int iResult;
 public:
-	ToGui();
+	FromGui();
 	void operator()();
 };
