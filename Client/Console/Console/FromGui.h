@@ -11,6 +11,8 @@
 #endif
 
 #include "WriterThread.h"
+#include <vector>
+#include "Client.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -23,5 +25,5 @@ private:
 	int iResult;
 public:
 	FromGui();
-	void operator()(WriterThread writer);
+	void operator()(int *localClientID, int *seq, std::vector<Client*>* clients, WriterThread writer);
 };

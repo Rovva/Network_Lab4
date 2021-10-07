@@ -38,7 +38,6 @@ public class GUI implements Observer {
 	
 	DatagramSocket socketUDP;
 	DatagramPacket packetUDP;
-	byte[] dataUDP = new byte[4];
 	
 	public GUI(Board board) throws SocketException, UnknownHostException {
 		this.board = board;
@@ -70,7 +69,8 @@ public class GUI implements Observer {
 	
 	public void sendUDP(byte[] data) throws IOException {
 		System.out.println(Inet6Address.getByAddress(null, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 4445).toString());
-		this.packetUDP = new DatagramPacket(dataUDP, dataUDP.length, Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}), 4445);
+		System.out.println("Data: " + data);
+		this.packetUDP = new DatagramPacket(data, data.length, Inet6Address.getByAddress(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}), 4445);
 		this.packetUDP.setData(data);
 		this.socketUDP.send(packetUDP);
 		
@@ -82,45 +82,41 @@ public class GUI implements Observer {
     				@Override
     				public void keyPressed(KeyEvent ke) {
     			        int keyCode = ke.getKeyCode();
-    			        int direction = 0;
+    			    	byte[] dataUDP = new byte[1];
     			        
     			        // Check if any of the pressed keys are valid.
     			        if(keyCode == KeyEvent.VK_LEFT) {
     			        	System.out.println("Left");
-    			        	byte[] data = new byte[1];
-    			        	data[0] = 4;
+    			        	dataUDP[0] = 4;
     			        	try {
-								sendUDP(data);
+								sendUDP(dataUDP);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
     			        } else if(keyCode == KeyEvent.VK_UP) {
     			        	System.out.println("UP");
-    			        	byte[] data = new byte[1];
-    			        	data[0] = 8;
+    			        	dataUDP[0] =  8;
     			        	try {
-								sendUDP(data);
+								sendUDP(dataUDP);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
     			        } else if(keyCode == KeyEvent.VK_RIGHT) {
     			        	System.out.println("Right");
-    			        	byte[] data = new byte[1];
-    			        	data[0] = 6;
+    			        	dataUDP[0] = 6;
     			        	try {
-								sendUDP(data);
+								sendUDP(dataUDP);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
     			        } else if(keyCode == KeyEvent.VK_DOWN) {
     			        	System.out.println("Down");
-    			        	byte[] data = new byte[1];
-    			        	data[0] = 2;
+    			        	dataUDP[0] = 2;
     			        	try {
-								sendUDP(data);
+								sendUDP(dataUDP);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

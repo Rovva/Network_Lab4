@@ -74,7 +74,7 @@ int main()
         std::cout << "Starting with GUI...\n";
         std::thread toGui(ToGui(), &localClientID, &clients, &updateClients);
         toGui.detach();
-        std::thread fromGui(FromGui(), *writer);
+        std::thread fromGui(FromGui(), &localClientID, &seq, &clients, *writer);
         fromGui.detach();
     }
 
