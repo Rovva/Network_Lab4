@@ -21,7 +21,7 @@ int ConnectToServer::setupConnection() {
     hints.ai_protocol = IPPROTO_TCP;
 
     // Handle the ip address and port number for the server.
-    iResult = getaddrinfo("192.168.1.124", "49152", &hints, &result);
+    iResult = getaddrinfo("127.0.0.1", "49152", &hints, &result);
     if (iResult != 0) {
         printf("getaddrinfo failed: %d\n", iResult);
         WSACleanup();
