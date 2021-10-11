@@ -7,7 +7,7 @@ Client::Client(int id, SOCKET socket) {
 }
 
 int Client::getClientID() {
-	return 0;
+	return clientID;
 }
 
 void Client::setPosition(Coordinate newPosition) {

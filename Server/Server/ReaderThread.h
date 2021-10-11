@@ -18,10 +18,12 @@
 class ReaderThread {
 private:
 	SOCKET RecvSocket;
+	int clientID;
 public:
 	ReaderThread(SOCKET socket);
-	int createID(std::vector<Client*> clients);
-	Coordinate createPosition(std::vector<Client*> clients);
-	Coordinate checkMove(int id, Coordinate newPosition, std::vector<Client*> clients);
+	int createID(std::vector<Client*> *clients);
+	Coordinate createPosition(std::vector<Client*> *clients);
+	Coordinate checkMove(int id, Coordinate newPosition, std::vector<Client*> *clients);
+	void removeClient(int id, std::vector<Client*> *clients);
 	void operator()(Broadcaster *broad);
 };
