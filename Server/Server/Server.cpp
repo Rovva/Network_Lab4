@@ -18,24 +18,25 @@
 
 int main()
 {
+    // Create a vector that cóntains all the clients.
     std::vector<Client*>* clients = new std::vector<Client*>;
-    std::vector<std::thread> threads;
 
+    // Call SocketSetup to bind a socket.
     SocketSetup* socket = new SocketSetup();
 
+    // Store the socket created above and send it to other classes.
     SOCKET RecvSocket = socket->getSocket();
     sockaddr_in server = socket->getServer();
 
+    // Create Broadcaster object that handles sending messages to all the clients.
     Broadcaster* broad = new Broadcaster(clients);
 
+    // Create a thread that runs ConnectionThread object that handles all the
+    // accepted connections.
     std::thread connection(ConnectionThread(&RecvSocket, server), broad);
     connection.detach();
 
     while (1) {
-    /*    for (int i = 0; i < clients.size(); i++) {
-            if (clients.at(i)->getUseFlag() == false) {
-                std::thread(ReaderThread(clients.at(i)->getSocket())).detach();
-            }
-        }*/
+
     }
 }
