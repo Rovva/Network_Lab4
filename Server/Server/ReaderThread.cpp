@@ -131,13 +131,16 @@ void ReaderThread::operator()(Broadcaster *broad) {
 			// When a client joins, create id and position and send it to all the clients.
 			if (msgHead->type == Join) {
 				std::cout << "JOIN RECIEVED!\n";
-
+				broad->incrementSeq();
+				std::cout << "seq in readerthread is now: " << broad->getSeq();
 				JoinMsg join;
 				// Create a unique id.
 				clientID = createID(broad->getClients());
 				join.head.id = clientID;
 				// Assign message type to the message.
 				join.head.type = Join;
+				broad->incrementSeq();
+				join.head.seq_no = broad->getSeq();
 				// Specify the length of the message.
 				join.head.length = sizeof(join);
 
@@ -146,6 +149,7 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				// Add it to the vector.
 				broad->getClients()->push_back(tmpclient);
 				std::cout << "Sending ID: " << join.head.id << "\n";
+				std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 				// Broadcast the message to all the clients.
 				broad->SendMessageToAll((char*)&join, sizeof(join));
 
@@ -153,8 +157,12 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				// new one connected.
 				ChangeMsg newPlayer;
 				newPlayer.head.id = clientID;
+				broad->incrementSeq();
+				newPlayer.head.seq_no = broad->getSeq();
 				newPlayer.head.type = Change;
 				newPlayer.type = NewPlayer;
+
+				std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 
 				// Broadcast the New player message to everyone.
 				broad->SendMessageToAll((char*)&newPlayer, sizeof(newPlayer));
@@ -168,28 +176,37 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				// Populate headers with types and the clients id.
 				newPosition.msg.type = NewPlayerPosition;
 				newPosition.msg.head.id = clientID;
+				broad->incrementSeq();
+				newPosition.msg.head.seq_no = broad->getSeq();
 				newPosition.msg.head.type = Change;
 				std::cout << "Sending startposition to client id: " << clientID << " \n";
 				// Update the client position in the clients vector.
 				updateClientPosition(newPosition.msg.head.id, newPosition.pos, broad->getClients());
+				
+				std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 				// Send the mesage to everyone connected.
 				broad->SendMessageToAll((char*)&newPosition, sizeof(newPosition));
 
 			} else if (msgHead->type == Leave) {
 				std::cout << "LEAVE RECIEVED!\n";
+				broad->incrementSeq();
 				// When a client sends a leave message to the server then
 				// create a message that the client has left the game.
 				ChangeMsg playerLeave;
 				playerLeave.type = PlayerLeave;
 				playerLeave.head.id = msgHead->id;
+				broad->incrementSeq();
+				playerLeave.head.seq_no = broad->getSeq();
 				playerLeave.head.type = Change;
 
+				std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 				broad->SendMessageToAll((char*)&playerLeave, sizeof(playerLeave));
 
 				removeClient(msgHead->id, broad->getClients());
 				std::cout << "Removed client id: " << msgHead->id << "\n";
 			} else if (msgHead->type == Event) {
 				std::cout << "EVENT RECIEVED!\n";
+				broad->incrementSeq();
 				// When a client sends a move event, the server will check the
 				// new coordinates so that they are valid and then update the
 				// position for the client in the clients vector and broadcast
@@ -201,11 +218,14 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				newPosition.pos = checkMove(moveEvent->event.head.id, moveEvent->pos, broad->getClients());
 				newPosition.msg.type = NewPlayerPosition;
 				newPosition.msg.head.id = moveEvent->event.head.id;
+				broad->incrementSeq();
+				newPosition.msg.head.seq_no = broad->getSeq();
 				newPosition.msg.head.type = Change;
 
 				std::cout << "Client id: " << newPosition.msg.head.id << " moves to X: " << newPosition.pos.x << " Y: " << newPosition.pos.y << "\n";
 				updateClientPosition(newPosition.msg.head.id, newPosition.pos, broad->getClients());
 
+				std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 				broad->SendMessageToAll((char*)&newPosition, sizeof(newPosition));
 			}
 		} else if (iResult == 0) {
@@ -217,8 +237,11 @@ void ReaderThread::operator()(Broadcaster *broad) {
 			ChangeMsg playerLeave;
 			playerLeave.type = PlayerLeave;
 			playerLeave.head.id = clientID;
+			broad->incrementSeq();
+			playerLeave.head.seq_no = broad->getSeq();
 			playerLeave.head.type = Change;
 
+			std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 			broad->SendMessageToAll((char*)&playerLeave, sizeof(playerLeave));
 
 			// Remove the disconnected client from the clients vector.

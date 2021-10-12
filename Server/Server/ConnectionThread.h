@@ -19,5 +19,5 @@ private:
 	sockaddr_in server;
 public:
 	ConnectionThread(SOCKET *socket, sockaddr_in srv);
-	void operator()(Broadcaster *broad);
+	void operator()(Broadcaster *broad, int *seq);
 };

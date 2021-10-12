@@ -1,8 +1,10 @@
 ﻿  ReaderThread.cpp
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(17,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(32,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(46,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(66,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(80,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(89,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(22,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(57,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(82,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(99,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Server\ReaderThread.cpp(109,20): warning C4018: '<': signed/unsigned mismatch
+  Server.cpp
+  Generating Code...
   Server.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Server\Debug\Server.exe

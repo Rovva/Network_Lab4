@@ -8,7 +8,7 @@ ConnectionThread::ConnectionThread(SOCKET *socket, sockaddr_in srv) {
 }
 
 // This is the main thread that handles all the connections.
-void ConnectionThread::operator()(Broadcaster *broad) {
+void ConnectionThread::operator()(Broadcaster *broad, int *seq) {
 	SOCKET tmpSocket;
 	socklen_t addrSize = sizeof(server);
 

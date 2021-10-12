@@ -10,8 +10,11 @@
 class Broadcaster {
 private:
 	std::vector<Client*>* clients;
+	int seq;
 public:
 	Broadcaster(std::vector<Client*>* clientVector);
 	std::vector<Client*>* getClients();
+	int getSeq();
+	void incrementSeq();
 	void SendMessageToAll(char* buffer, int size);
 };

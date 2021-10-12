@@ -21,6 +21,8 @@ int main()
     // Create a vector that cóntains all the clients.
     std::vector<Client*>* clients = new std::vector<Client*>;
 
+    int seq = 0;
+
     // Call SocketSetup to bind a socket.
     SocketSetup* socket = new SocketSetup();
 
@@ -33,7 +35,7 @@ int main()
 
     // Create a thread that runs ConnectionThread object that handles all the
     // accepted connections.
-    std::thread connection(ConnectionThread(&RecvSocket, server), broad);
+    std::thread connection(ConnectionThread(&RecvSocket, server), broad, &seq);
     connection.detach();
 
     while (1) {

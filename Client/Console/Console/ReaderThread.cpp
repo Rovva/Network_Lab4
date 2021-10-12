@@ -20,7 +20,7 @@ void ReaderThread::operator()(int *seq, int *localClientID, Coordinate *startPos
             printf("Bytes received: %d\n", iResult);
             msgHead = (MsgHead*)recvbuf;
             *seq = msgHead->seq_no;
-            
+            std::cout << "Seq is now: " << *seq << "\n";
             // Start by checking if the message is a "Join".
             if (msgHead->type == Join) {
                 JoinMsg* joinMsg = (JoinMsg*)recvbuf;
