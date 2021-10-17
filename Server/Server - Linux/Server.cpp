@@ -2,9 +2,9 @@
 #include <vector>
 #include <thread>
 
-#include <io.h>
-#include <stdio.h>
-#include <winsock2.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 #include "SocketSetup.h"
 #include "ConnectionThread.h"
@@ -14,10 +14,11 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 #include "Messages.h"
-#endif 
+#endif
 
 int main()
 {
+    int test = 0;
     // Create a vector that cóntains all the clients.
     std::vector<Client*>* clients = new std::vector<Client*>;
 
@@ -27,7 +28,7 @@ int main()
     SocketSetup* socket = new SocketSetup();
 
     // Store the socket created above and send it to other classes.
-    SOCKET RecvSocket = socket->getSocket();
+    int RecvSocket = socket->getSocket();
     sockaddr_in server = socket->getServer();
 
     // Create Broadcaster object that handles sending messages to all the clients.

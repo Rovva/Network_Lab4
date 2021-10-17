@@ -1,11 +1,9 @@
 #pragma once
 
-#ifdef _WIN32
-#include <Winsock2.h>
-#endif
-#include <ws2tcpip.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <stdio.h>
-#pragma comment(lib, "Ws2_32.lib")
 
 #ifndef MESSAGES_H
 #define MESSAGES_H
@@ -17,11 +15,11 @@ class Client {
 private:
 	int clientID;
 	Coordinate position;
-	SOCKET clientSocket;
+	int clientSocket;
 public:
-	Client(int id, SOCKET socket);
+	Client(int id, int socket);
 	int getClientID();
 	Coordinate getPosition();
 	void setPosition(Coordinate newPosition);
-	SOCKET getSocket();
+	int getSocket();
 };

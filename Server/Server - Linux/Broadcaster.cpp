@@ -28,3 +28,13 @@ void Broadcaster::SendMessageToAll(char* buffer, int size) {
 		send(clients->at(i)->getSocket(), buffer, size, 0);
 	}
 }
+
+void Broadcaster::SendLeave(char* buffer, int size, int clientID) {
+
+    for (int i = 0; i < clients->size(); i++) {
+        if(clients->at(i)->getClientID() != clientID) {
+            std::cout << "Sending message to ID: " << i+1 << "\n";
+            send(clients->at(i)->getSocket(), buffer, size, 0);
+        }
+	}
+}

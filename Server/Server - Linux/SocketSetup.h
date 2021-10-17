@@ -1,20 +1,20 @@
 #pragma once
-#include <io.h>
-#include <stdio.h>
-#include <winsock2.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
 #include <iostream>
 #ifndef MESSAGES_H
 #define MESSAGES_H
 #include "Messages.h"
-#endif 
+#endif
 
 class SocketSetup {
 private:
-	WSADATA wsa;
-	SOCKET RecvSocket;
+	int RecvSocket;
 	sockaddr_in server;
 public:
 	SocketSetup();
-	SOCKET getSocket();
+	int getSocket();
 	struct sockaddr_in getServer();
 };

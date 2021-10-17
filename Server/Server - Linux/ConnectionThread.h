@@ -1,7 +1,7 @@
 #pragma once
-#include <io.h>
-#include <stdio.h>
-#include <winsock2.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -11,13 +11,13 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 #include "Messages.h"
-#endif 
+#endif
 
 class ConnectionThread {
 private:
-	SOCKET RecvSocket;
+	int RecvSocket;
 	sockaddr_in server;
 public:
-	ConnectionThread(SOCKET *socket, sockaddr_in srv);
+	ConnectionThread(int *socket, sockaddr_in srv);
 	void operator()(Broadcaster *broad, int *seq);
 };

@@ -1,0 +1,80 @@
+# depslib dependency file v1.0
+1634370343 source:/home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/Server.cpp
+	<iostream>
+	<vector>
+	<thread>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	"SocketSetup.h"
+	"ConnectionThread.h"
+	"Client.h"
+	"ReaderThread.h"
+	"Broadcaster.h"
+	"Messages.h"
+
+1634370158 /home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/SocketSetup.h
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<string.h>
+	<iostream>
+	"Messages.h"
+
+1634368536 /home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/Messages.h
+
+1634370336 /home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/ConnectionThread.h
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<iostream>
+	<vector>
+	<thread>
+	"Client.h"
+	"ReaderThread.h"
+	"Broadcaster.h"
+	"Messages.h"
+
+1634370237 /home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/Client.h
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<stdio.h>
+	"Messages.h"
+	<thread>
+
+1634469557 /home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/ReaderThread.h
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<iostream>
+	<vector>
+	<thread>
+	"Broadcaster.h"
+	"Client.h"
+	"Messages.h"
+
+1634369542 /home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/Broadcaster.h
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<iostream>
+	<vector>
+	<thread>
+	"Client.h"
+
+1634370169 source:/home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/SocketSetup.cpp
+	"SocketSetup.h"
+
+1634368535 source:/home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/Broadcaster.cpp
+	"Broadcaster.h"
+
+1634370189 source:/home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/Client.cpp
+	"Client.h"
+
+1634370673 source:/home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/ConnectionThread.cpp
+	"ConnectionThread.h"
+
+1634370719 source:/home/rovva/Documents/Skola/Network_Lab4/Server/Server - Linux/ReaderThread.cpp
+	"ReaderThread.h"
+

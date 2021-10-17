@@ -1,7 +1,7 @@
 #pragma once
-#include <io.h>
-#include <stdio.h>
-#include <winsock2.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -17,4 +17,5 @@ public:
 	int getSeq();
 	void incrementSeq();
 	void SendMessageToAll(char* buffer, int size);
+	void SendLeave(char* buffer, int size, int clientID);
 };

@@ -1,7 +1,7 @@
 #pragma once
-#include <io.h>
-#include <stdio.h>
-#include <winsock2.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -10,17 +10,14 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 #include "Messages.h"
-#endif 
-
-
-#pragma comment(lib,"ws2_32.lib") //Winsock Library
+#endif
 
 class ReaderThread {
 private:
-	SOCKET RecvSocket;
+	int RecvSocket;
 	int clientID;
 public:
-	ReaderThread(SOCKET socket);
+	ReaderThread(int socket);
 	int createID(std::vector<Client*> *clients);
 	Coordinate createPosition(std::vector<Client*> *clients);
 	Coordinate checkMove(int id, Coordinate newPosition, std::vector<Client*> *clients);

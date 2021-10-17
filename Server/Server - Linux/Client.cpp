@@ -3,7 +3,7 @@
 // Constructor for a client takes two parameters, id and socket,
 // id is the clients id and socket is the newly created socket from
 // ConnectionThread.
-Client::Client(int id, SOCKET socket) {
+Client::Client(int id, int socket) {
 	clientID = id;
 	clientSocket = socket;
 }
@@ -24,6 +24,6 @@ Coordinate Client::getPosition() {
 }
 
 // Returns the stored socket specific for this client.
-SOCKET Client::getSocket() {
+int Client::getSocket() {
 	return clientSocket;
 }

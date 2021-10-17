@@ -2,14 +2,14 @@
 
 // Constructor takes a socket and sockaddr srv which are needed for connecting
 // and accepting connections from clients.
-ConnectionThread::ConnectionThread(SOCKET *socket, sockaddr_in srv) {
+ConnectionThread::ConnectionThread(int *socket, sockaddr_in srv) {
 	RecvSocket = *socket;
 	server = srv;
 }
 
 // This is the main thread that handles all the connections.
 void ConnectionThread::operator()(Broadcaster *broad, int *seq) {
-	SOCKET tmpSocket;
+	int tmpSocket;
 	socklen_t addrSize = sizeof(server);
 
 	while (1) {

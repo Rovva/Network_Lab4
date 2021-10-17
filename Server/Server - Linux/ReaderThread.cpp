@@ -1,7 +1,7 @@
 #include "ReaderThread.h"
 
 // Constructor that takes a Socket as a parameter and stores it locally.
-ReaderThread::ReaderThread(SOCKET socket) {
+ReaderThread::ReaderThread(int socket) {
 	RecvSocket = socket;
 	clientID = -1;
 }
@@ -153,7 +153,7 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				// Broadcast the message to all the clients.
 				broad->SendMessageToAll((char*)&join, sizeof(join));
 
-				// Create a new message that alerts all clients that there is a 
+				// Create a new message that alerts all clients that there is a
 				// new one connected.
 				ChangeMsg newPlayer;
 				newPlayer.head.id = clientID;
@@ -182,7 +182,7 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				std::cout << "Sending startposition to client id: " << clientID << " \n";
 				// Update the client position in the clients vector.
 				updateClientPosition(newPosition.msg.head.id, newPosition.pos, broad->getClients());
-				
+
 				std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
 				// Send the mesage to everyone connected.
 				broad->SendMessageToAll((char*)&newPosition, sizeof(newPosition));
@@ -213,7 +213,7 @@ void ReaderThread::operator()(Broadcaster *broad) {
 				// the new coordinates to all other clients connected.
 				MoveEvent* moveEvent;
 				moveEvent = (MoveEvent*)recvbuf;
-				
+
 				NewPlayerPositionMsg newPosition;
 				newPosition.pos = checkMove(moveEvent->event.head.id, moveEvent->pos, broad->getClients());
 				newPosition.msg.type = NewPlayerPosition;
@@ -242,7 +242,8 @@ void ReaderThread::operator()(Broadcaster *broad) {
 			playerLeave.head.type = Change;
 
 			std::cout << "SEQ in ReaderThread is now: " << broad->getSeq() << "\n";
-			broad->SendMessageToAll((char*)&playerLeave, sizeof(playerLeave));
+			broad->SendLeave((char*)&playerLeave, sizeof(playerLeave), clientID);
+			//broad->SendMessageToAll((char*)&playerLeave, sizeof(playerLeave));
 
 			// Remove the disconnected client from the clients vector.
 			removeClient(clientID, broad->getClients());
