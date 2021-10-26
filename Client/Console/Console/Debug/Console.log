@@ -1,6 +1,1 @@
-﻿  ReaderThread.cpp
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(60,43): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(89,39): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(110,39): warning C4018: '<': signed/unsigned mismatch
-C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(122,35): warning C4018: '<': signed/unsigned mismatch
-  Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
+﻿  Console.vcxproj -> C:\Users\chris\Documents\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
