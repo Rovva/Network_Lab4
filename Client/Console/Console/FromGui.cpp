@@ -43,6 +43,8 @@ void FromGui::operator()(int* localClientID, int *seq, std::vector<Client*>* cli
 	Coordinate newPos, oldPos;
 	oldPos.x = 0; oldPos.y = 0;
 	newPos.x = 0; newPos.y = 0;
+
+	slen = sizeof(server);
 	while (1)
 	{
 		fflush(stdout);
