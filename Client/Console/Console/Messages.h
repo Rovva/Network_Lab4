@@ -4,18 +4,18 @@
 #define MAXNAMELEN  32
 
 enum MsgType {
-    Join,// Client joining game at server  
-    Leave,// Client leaving game  
-    Change,// Information to clients  
-    Event,// Information from clients to server  
-    TextMessage// Send text messages to one or all
-};// Included first in all messagesstruct
-
+    Join,		// Client joining game at server  
+    Leave,		// Client leaving game  
+    Change,		// Information to clients  
+    Event,		// Information from clients to server  
+    TextMessage	// Send text messages to one or all
+};
+// Included first in all messagesstruct
 struct MsgHead {
-    unsigned int length;// Total length for whole message  
-    unsigned int seq_no;  // Sequence number  
-    unsigned int id;// Client ID or 0;
-    MsgType   type;// Type of message
+    unsigned int length;	// Total length for whole message  
+    unsigned int seq_no;	// Sequence number  
+    unsigned int id;		// Client ID or 0;
+    MsgType   type;			// Type of message
 };
 
 enum ObjectDesc {
@@ -48,7 +48,7 @@ enum ChangeType {
     PlayerLeave,
     NewPlayerPosition
 };
-// Included first in all Change messages
+
 struct ChangeMsg {
     MsgHead head;
     ChangeType type;
@@ -60,16 +60,16 @@ struct Coordinate {
 }; 
 
 struct NewPlayerMsg {
-    ChangeMsg msg; //Change message header with new client id
+    ChangeMsg msg;			//Change message header with new client id
     ObjectDesc desc;
     ObjectForm form;
-    char name[MAXNAMELEN]; // nullterminated!, or empty
+    char name[MAXNAMELEN];	// nullterminated!, or empty
 };
 
 struct NewPlayerPositionMsg {
-    ChangeMsg msg; //Change message header
-    Coordinate pos; //New object position
-    Coordinate dir; //New object direction
+    ChangeMsg msg;			//Change message header
+    Coordinate pos; 		//New object position
+    Coordinate dir;			//New object direction
 };
 
 struct PlayerLeaveMsg {
@@ -77,19 +77,16 @@ struct PlayerLeaveMsg {
 };
 
 // Messages of type Event (Client -> Server)
-enum EventType
-{
+enum EventType {
     Move
 };
 // Included first in all Event messages
-struct EventMsg
-{
+struct EventMsg {
     MsgHead head;
     EventType type;
 };
 // Variantions of EventMsg
-struct MoveEvent
-{
+struct MoveEvent {
     EventMsg event;
     Coordinate pos; //New object position
     Coordinate dir; //New object direction

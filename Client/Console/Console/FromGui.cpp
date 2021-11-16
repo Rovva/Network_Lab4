@@ -5,10 +5,10 @@
 FromGui::FromGui() {
 	WSADATA wsa;
 
-	// Fill memory locations for server variable.
+	// Nulla minnet där "server" lagras.
 	ZeroMemory(&server, sizeof server);
 
-	// Initialise winsock.
+	// Initiera WinSock.
 	printf("\nInitialising Winsock...");
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
@@ -16,19 +16,17 @@ FromGui::FromGui() {
 		exit(EXIT_FAILURE);
 	}
 
-	// Create a socket.
+	// Skapa en socket.
 	if ((RecvSocket = socket(AF_INET6, SOCK_DGRAM, 0)) == INVALID_SOCKET)
 	{
 		printf("Could not create socket : %d", WSAGetLastError());
 	}
 
-	// Prepare the sockaddr_in structure.
 	server.sin6_family = AF_INET6;
 	server.sin6_port = htons(PORT);
-	// Specify localhost in IPv6 address.
 	inet_pton(PF_INET6, "::1", &server.sin6_addr);
 
-	// Bind the socket.
+	// Binda socketen som skapats tidigare.
 	if (bind(RecvSocket, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR)
 	{
 		printf("Bind failed with error code : %d", WSAGetLastError());
@@ -37,31 +35,33 @@ FromGui::FromGui() {
 }
 
 void FromGui::operator()(int* localClientID, int *seq, std::vector<Client*>* clients, WriterThread writer) {
-	// char variable buf is used to store data from the GUI.
+	// Denna variabel lagrar det tecken som tas emot från GUI.
 	char buf[1];
-	// newPos and oldPos is used to calculate the new position of the client.
+	// newPos och oldPos används för att beräkna den nya positionen för den lokala klienten.
 	Coordinate newPos, oldPos;
 	oldPos.x = 0; oldPos.y = 0;
 	newPos.x = 0; newPos.y = 0;
 
 	slen = sizeof(server);
+	
 	while (1)
 	{
 		fflush(stdout);
 
-		// Zero the memory location for the variable buf as it might contain old data.
+		// Nulla minnet där "buf" lagras eftersom det kan finns gammal data där.
 		ZeroMemory(&buf, sizeof buf);
 
-		// Listen for UDP traffic from localhost.
+		// Lyssna efter UDP trafik från localhost.
 		if ((recv_len = recvfrom(RecvSocket, buf, BUFLEN, 0, (struct sockaddr*)&server, &slen)) == SOCKET_ERROR)
 		{
 			printf("recvfrom() failed with error code : %d", WSAGetLastError());
 			exit(EXIT_FAILURE);
 		}
-		// Print the data recieved in the form of a integer for debugging purpose.
+
+		// Skriva ut värdet som togs emot för att debugga.
 		printf("Data: %i\n", (char) buf[0]);
 
-		// Go through all the clients in the vector to find the current position for the local client.
+		// Gå igenom alla klienter i vektorn för att hitta den position den lokala klienten har.
 		for (int i = 0; i < clients->size(); i++) {
 			std::cout << "Client: " << clients->at(i)->getClientID() << " is in the list. X: "
 				<< clients->at(i)->getPosition().x << " Y: " << clients->at(i)->getPosition().y << "\n";
@@ -69,8 +69,8 @@ void FromGui::operator()(int* localClientID, int *seq, std::vector<Client*>* cli
 				oldPos = clients->at(i)->getPosition();
 			}
 		}
-		// 4 means left (numpad). Loop through all the clients and find the local client and
-		// then calculate the new position to send to the server.
+		// 4 innebär vänster som på numpaden. Loopa igenom alla klienter för att hitta den
+		// gammla positionen och beräkna den nya som skickas som ett meddelande till servern.
 		if (buf[0] == 4) {
 			for (int i = 0; i < clients->size(); i++) {
 				if (clients->at(i)->getClientID() == *localClientID) {
@@ -79,7 +79,8 @@ void FromGui::operator()(int* localClientID, int *seq, std::vector<Client*>* cli
 					writer.sendMoveEvent(*localClientID, newPos, seq);
 				}
 			}
-		// 6 means right (numpad).
+			
+		// 6 innebär höger (numpad).
 		} else if (buf[0] == 6) {
 			for (int i = 0; i < clients->size(); i++) {
 				if (clients->at(i)->getClientID() == *localClientID) {
@@ -88,7 +89,7 @@ void FromGui::operator()(int* localClientID, int *seq, std::vector<Client*>* cli
 					writer.sendMoveEvent(*localClientID, newPos, seq);
 				}
 			}
-		// 8 means up (numpad).
+		// 8 innebär upp (numpad).
 		} else if (buf[0] == 8) {
 			for (int i = 0; i < clients->size(); i++) {
 				if (clients->at(i)->getClientID() == *localClientID) {
@@ -97,7 +98,7 @@ void FromGui::operator()(int* localClientID, int *seq, std::vector<Client*>* cli
 					writer.sendMoveEvent(*localClientID, newPos, seq);
 				}
 			}
-		// 2 means down (numpad).
+		// 2 innebär neråt (numpad).
 		} else if (buf[0] == 2) {
 			for (int i = 0; i < clients->size(); i++) {
 				if (clients->at(i)->getClientID() == *localClientID) {

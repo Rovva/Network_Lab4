@@ -1,57 +1,60 @@
-// This class handles sending messages to the server.
-
 #include "WriterThread.h"
 
-// Constructor that takes and stores the socket needed for communicating with the server.
+// Konstruktor som tar emot en socket och lagrar den lokalt.
 WriterThread::WriterThread(SOCKET socket) {
 	ConnectSocket = socket;
 }
 
-// The function for sending a Join message.
+// Metoden som skickar ett "Join" meddelande.
 void WriterThread::sendJoin() {
     int sendMsg = 0;
-    // Fill the message with the data needed for a Join message.
+	// Fyll meddelandet med data som behövs.
     JoinMsg joinMsg;
     joinMsg.head.id = 0;
     joinMsg.head.length = sizeof(joinMsg);
     joinMsg.head.type = Join;
-    // Send the message to the server.
+	
+	// Skicka meddelandet till servern.
     sendMsg = send(ConnectSocket, (char*)&joinMsg, sizeof(joinMsg), 0);
     printf("Join message sent.\n");
     printf("Bytes Sent: %ld\n", sendMsg);
 }
 
-// Function for sending a Leave message.
+// Metoden som skickar ett "Leave" meddelande till servern.
 void WriterThread::sendLeave(int id) {
     int sendMsg = 0;
-    // Store the local clients ID in the Leave message.
+	// Lagra det id som den lokala klienten har i meddelandet.
     LeaveMsg leaveMsg;
     leaveMsg.head.id = id;
     leaveMsg.head.length = sizeof(leaveMsg);
     leaveMsg.head.type = Leave;
-    // Send the message to the server.
+	
+	// Skicka meddelandet till servern.
     sendMsg = send(ConnectSocket, (char*)&leaveMsg, sizeof(leaveMsg), 0);
     printf("Leave message sent.\n");
     printf("Bytes Sent: %ld\n", sendMsg);
 }
 
 // Function for sending a request to move the clients position.
+// Metoden som skickar en "MoveEvent" till servern. (Skickar förfrågan om att förflytta klienten)
 void WriterThread::sendMoveEvent(int id, Coordinate position, int *seq) {
     int sendMsg = 0, newSeq = 0;
 
     MoveEvent move;
     move.event.type = Move;
-    // Store the local clients ID in the Move message and calculate the sequence number.
+	// Lagra det id som den lokala klienten har i meddelandet och kalkylera sekvensnummret.
     move.event.head.id = id;
     move.event.head.length = sizeof(move);
     newSeq = *seq;
     move.event.head.seq_no = newSeq++;
     move.event.head.type = Event;
-    // Store the position and set direction to 0.
+	
+	// Lagra positionen som skickats som parameter och sätt "direction" till 0.
     move.pos = position;
     move.dir.x = 0;
     move.dir.y = 0;
-    // Send the message to the server.
+	
+	// Skicka meddelandet till servern.
     sendMsg = send(ConnectSocket, (char*)&move, sizeof(move), 0);
     printf("Move event message sent.\n");
     printf("Bytes Sent: %ld\n", sendMsg);

@@ -1,3 +1,25 @@
-﻿  ConnectToServer.cpp
-C:\Users\chris\Documents\GitHub\Network_Lab4\Client\Console\Console\ConnectToServer.cpp(64): warning C4715: 'ConnectToServer::setupConnection': not all control paths return a value
-  Console.vcxproj -> C:\Users\chris\Documents\GitHub\Network_Lab4\Client\Console\Debug\Console.exe
+﻿  Client.cpp
+  ConnectToServer.cpp
+  Console.cpp
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\Console.cpp(110,27): warning C4018: '<': signed/unsigned mismatch
+  FromGui.cpp
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\FromGui.cpp(65,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\FromGui.cpp(75,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\FromGui.cpp(85,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\FromGui.cpp(94,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\FromGui.cpp(103,22): warning C4018: '<': signed/unsigned mismatch
+  ReaderThread.cpp
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(63,43): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(95,39): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(120,39): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ReaderThread.cpp(132,35): warning C4018: '<': signed/unsigned mismatch
+  ToGui.cpp
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ToGui.cpp(16,10): warning C4101: 'SendBuf': unreferenced local variable
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ToGui.cpp(41,24): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ToGui.cpp(41,27): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ToGui.cpp(41,30): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ToGui.cpp(74,31): warning C4018: '<': signed/unsigned mismatch
+  WriterThread.cpp
+  Generating Code...
+C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Console\ConnectToServer.cpp(56): warning C4715: 'ConnectToServer::setupConnection': not all control paths return a value
+  Console.vcxproj -> C:\Users\chris\OneDrive\Dokument\GitHub\Network_Lab4\Client\Console\Debug\Console.exe

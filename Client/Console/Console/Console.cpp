@@ -1,5 +1,11 @@
-// Console client for Laboration 4
-//
+/**
+* @file Console.cpp
+* @brief Där allting börjar.
+* @author Christoffer Rova
+* @version 1.0
+* @date 2021-10-26
+*/
+
 #pragma once
 #include <iostream>
 #include <stdio.h>
@@ -28,37 +34,36 @@
 #pragma comment(lib, "Ws2_32.lib")
 #define DEFAULT_PORT "49152"
 
-
-#define SERVER "127.0.0.1"	//ip address of udp server
-#define BUFLEN 512	//Max length of buffer
-#define PORT 4444	//The port on which to listen for incoming data
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 SOCKET ConnectSocket;
 
 int main()
 {
-    // Create a vector to store all the clients.
+	// Skapa en vektor som sparar alla klienter.
     std::vector<Client*> clients;
 
-    // Create a object that handles the connection to the server.
+	// Skapa ett objekt som hanterar anslutning till servern.
     ConnectToServer *serverConnection;
     serverConnection = new ConnectToServer();
     serverConnection->setupConnection();
-    // Store the socket created above from ConnectToServer object.
+	
+	// Spara den socket som skapats i ConnectToServer för att skicka
+	// vidare till ReaderThread.
     SOCKET ConnectSocket = serverConnection->getSocket();
 
-    // Local variables for the local client.
+	// Lokala variabler för den lokala klienten.
     int seq = 0;
     int localClientID = -1;
     Coordinate localStartingPosition;
-    // Assign invalid position for the client.
+	
+	// Startvärden för klientens position.
     localStartingPosition.x = -200;
     localStartingPosition.y = -200;
 
     bool updateClients = false;
 
-    // Create the object that is responsible for reading all the messages sent from the server to clients.
+	// Skapa ett objekt som tar emot alla meddelanden från servern till klienten.
     std::thread reader(ReaderThread(ConnectSocket), &seq, &localClientID, &localStartingPosition, &clients, &updateClients);
 
     reader.detach();
@@ -67,21 +72,23 @@ int main()
 
     std::string option;
 
+	// Fråga om GUI ska hanteras eller inte.
     std::cout << "Start game with GUI? (y/n)\n";
     std::cin >> option;
-
+	// Om GUI ska hanteras av klienten så skapa objekt som körs i trådar.
     if (option == "y") {
         std::cout << "Starting with GUI...\n";
         std::thread toGui(ToGui(), &localClientID, &clients, &updateClients);
         toGui.detach();
+		
         std::thread fromGui(FromGui(), &localClientID, &seq, &clients, *writer);
         fromGui.detach();
     }
 
-    // Send a Join message to server.
+	// Skicka ett "Join" meddelande till servern.
     writer->sendJoin();
 
-    // Local variables needed for calculating new position for the local client.
+	// Ett gäng lokala variabler som behövs när ny position beräknas.
     int moveDirection = 0;
     Coordinate newPos, oldPos;
     oldPos.x = 0; oldPos.y = 0;
@@ -91,15 +98,15 @@ int main()
     while (1) {
         oldPos.x = 0; oldPos.y = 0;
         newPos.x = 0; newPos.y = 0;
-        //togui->SendTest();
-
-        // Number input to move the client around.
-        // 4 = Left, 6 = Right, 8 = Upwards, 2 = Downwards.
+		
+		// Ta emot en siffra som motsvarar åt vilket håll klienten vill förflyttas.
+		// 4 = Vänster, 6 = Höger, 8 = Upp och 2 = Neråt. (Numpad) 5 = Nuvarande position.
         std::cout << "Local client id is: " << localClientID << " Which direction?\n";
         std::cin >> moveDirection;
 
 
-        // Go through all the clients in the vector to find the current position for the local client.
+		// Gå igenom alla klienter som finns lagrade i vektorn "clients" för att hitta
+		// vilken position den lokala klienten har.
         for (int i = 0; i < clients.size(); i++) {
             std::cout << "Client: " << clients.at(i)->getClientID() << " is in the list. X: "
                 << clients.at(i)->getPosition().x << " Y: " << clients.at(i)->getPosition().y << "\n";
@@ -108,7 +115,7 @@ int main()
             }
         }
 
-        // Calculating the new position depending on input.
+		// Beräkning av den nya positionen baserat på den gamla.
         if (moveDirection == 2) {
             newPos.x = oldPos.x;
             newPos.y = oldPos.y - 1;
@@ -126,12 +133,11 @@ int main()
             newPos.y = oldPos.y;
             writer->sendMoveEvent(localClientID, newPos, &seq);
         }
-        // Number 5 is used to display the current position.
+		// Nummer 5 visar vilken position den lokala klienten har.
         if (moveDirection == 5) {
             std::cout << "Current position: X: " << oldPos.x << " Y: " << oldPos.y << "\n";
         }
     }
-    // cleanup
     closesocket(ConnectSocket);
     WSACleanup();
 
